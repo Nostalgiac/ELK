@@ -1,0 +1,35 @@
+#Example logstash filter for Squid
+
+input {
+  tcp {
+    type => "squid"
+    port => 5140
+  }
+}
+
+filter {
+  if [type] == "squid" {
+    grok {
+    match => [ "message", "%{NOTSPACE:syslogprotocolversion}%{SYSLOGTIMESTAMP:timestamp}\s%{HOSTNAME:servername}\s%{NUMBER:duration}\s+%{NUMBER:bytes}\s%{IP:client_address}\s%{WORD:cache_result}/%{INT:status_code}\s%{NUMBER:bytes}\s%{WORD:request_method}\s%{NOTSPACE:url}\s(%{NOTSPACE:user}|-)\s%{WORD:hierarchy_code}/(%{IP:server}|-)\s%{NOTSPACE:content_type}" ]
+      add_tag => ["squid"]
+    }
+#    geoip {
+#      source => "url"
+#    }
+  }
+}
+
+output {
+ if [type] == "squid" {
+    elasticsearch {
+        hosts => ["127.0.0.1:9200"]
+        user => elastic
+        password => elastic
+    }
+
+#    stdout { codec => rubydebug }
+#    file {
+#      path => "/tmp/squid.log"
+#    }
+ }
+}

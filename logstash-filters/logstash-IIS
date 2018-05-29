@@ -1,0 +1,32 @@
+#Exapmle logstash configuration for Windows Server IIS
+
+input {
+  tcp {
+    port => "3517"
+    type => "iislog"
+  }
+}
+
+filter {
+    if [type] == "iislog" {
+          grok {
+            match => ["message", "%{TIMESTAMP_ISO8601:log_timestamp} %{IP:serverIP} %{WORD:method} %{URIPATH:uriStem} %{NOTSPACE:uriQuery} %{NUMBER:port} %{NOTSPACE:username} %{IPORHOST:clientIP} %{NOTSPACE:userAgent} %{NUMBER:response} %{NUMBER:subresponse} %{NUMBER:win32response} %{NUMBER:timetaken}"]
+            add_tag => ["iislog"]
+          }
+            date {
+                match => ["log_timestamp", "YYYY-MM-dd HH:mm:ss"]
+                timezone => "Etc/UCT"
+
+            }
+        }
+}
+
+output {
+ if [type] == "iislog" {
+   elasticsearch {
+     hosts => ["127.0.0.1:9200"]
+        user => elastic
+        password => elastic
+   }
+ }
+}

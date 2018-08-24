@@ -10,7 +10,7 @@ input {
 filter {
   if [type] == "squid" {
     grok {
-    match => [ "message", "%{NOTSPACE:syslogprotocolversion}%{SYSLOGTIMESTAMP:timestamp}\s%{HOSTNAME:servername}\s%{NUMBER:duration}\s+%{NUMBER:bytes}\s%{IP:client_address}\s%{WORD:cache_result}/%{INT:status_code}\s%{NUMBER:bytes}\s%{WORD:request_method}\s%{NOTSPACE:url}\s(%{NOTSPACE:user}|-)\s%{WORD:hierarchy_code}/(%{IP:server}|-)\s%{NOTSPACE:content_type}" ]
+    match => [ "message", "%{NOTSPACE:syslogprotocolversion}%{SYSLOGTIMESTAMP:timestamp}\s%{HOSTNAME:servername}\s%{NUMBER:duration}\s+%{NUMBER:time_elapsed}\s%{IP:client_address}\s%{WORD:cache_result}/%{INT:status_code}\s%{NUMBER:bytes}\s%{WORD:request_method}\s%{NOTSPACE:url}\s(%{NOTSPACE:user}|-)\s%{WORD:hierarchy_code}/(%{IP:server}|-)\s%{NOTSPACE:content_type}" ]
       add_tag => ["squid"]
     }
 #    geoip {

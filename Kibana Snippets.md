@@ -1,6 +1,9 @@
-#Default Template
-#High order = apply last = overwrite
+Default Template
 
+High order = apply last = overwrite
+
+
+```
 {
     "order": 99,
     "index_patterns": [
@@ -42,3 +45,4 @@
 	},
     "aliases": {}
 }
+```

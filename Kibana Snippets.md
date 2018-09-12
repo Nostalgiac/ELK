@@ -46,3 +46,27 @@ High order = apply last = overwrite
     "aliases": {}
 }
 ```
+
+Get tasks (Specifically reindex)
+```
+GET _tasks?detailed=true&actions=*reindex
+```
+
+Reindex multiple sources to multiple destinations
+eg. source-01.01.2018 to source-01.01.2018-1
+```
+POST _reindex
+{
+  "source": {
+    "index": "source-*"
+  },
+  "dest": {
+    "index": "destination"
+  },
+  "script": {
+    "lang": "painless",
+    "source": "ctx._index = 'destination-' + (ctx._index.substring('destination-'.length(), ctx._index.length())) + '-1'"
+  }
+}
+```
+

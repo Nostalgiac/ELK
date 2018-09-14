@@ -53,6 +53,7 @@ GET _tasks?detailed=true&actions=*reindex
 ```
 
 Reindex multiple sources to multiple destinations
+
 eg. source-01.01.2018 to source-01.01.2018-1
 ```
 POST _reindex
@@ -70,3 +71,13 @@ POST _reindex
 }
 ```
 
+Delete all references of a tag/type
+
+```
+POST _all/_delete_by_query
+{
+  "query" : {
+    "match" : { "tags": "dns" }
+  }
+}
+```

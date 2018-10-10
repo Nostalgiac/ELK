@@ -1,9 +1,10 @@
-Default Template
+Create a default Template
 
 High order = apply last = overwrite
 
 
 ```
+PUT /template/default
 {
     "order": 99,
     "index_patterns": [
@@ -51,6 +52,21 @@ Get tasks (Specifically reindex)
 ```
 GET _tasks?detailed=true&actions=*reindex
 ```
+
+Reindex single index
+```
+POST _reindex
+{
+  "source": {
+    "index": "source-2018.39"
+  },
+  "dest": {
+    "index": "destination-2018.39",
+    "op_type": "create"
+  }
+}
+```
+
 
 Reindex multiple sources to multiple destinations
 
